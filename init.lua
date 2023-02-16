@@ -69,6 +69,10 @@ require('packer').startup(function(use)
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
 
+  use {
+      "windwp/nvim-autopairs",
+      config = function() require("nvim-autopairs").setup {} end
+  }
   -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
   local has_plugins, plugins = pcall(require, 'custom.plugins')
   if has_plugins then
@@ -342,12 +346,11 @@ end
 --  Add any additional override configuration in the following tables. They will be passed to
 --  the `settings` field of the server config. You must look up that documentation yourself.
 local servers = {
-    -- clangd = {},
+    clangd = {},
     -- gopls = {},
-    -- pyright = {},
-    -- rust_analyzer = {},
-    -- tsserver = {},
-
+    pyright = {},
+    rust_analyzer = {},
+    tsserver = {},
     lua_ls = {
         Lua = {
             workspace = { checkThirdParty = false },
@@ -381,6 +384,7 @@ mason_lspconfig.setup_handlers {
           settings = servers[server_name],
       }
     end,
+
 }
 
 -- Turn on lsp status information
